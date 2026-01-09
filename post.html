@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LFSR Post-Test | ECE Dept</title>
+    <style>
+        :root {
+            --bg: #000814;
+            --cyan: #00A8E8;
+            --card: #0a0e14;
+            --text: #ffffff;
+        }
+
+        :root {
+            --bg-main: #050814;
+            /* page background */
+            --bg-panel: #020b1e;
+            /* content card */
+            --header-top: #031633;
+            /* header gradient top */
+            --header-bottom: #00c0ff;
+            /* header gradient bottom */
+            --text-main: #ffffff;
+            /* main text */
+            --text-dim: #b0b8c8;
+            /* secondary text */
+            --accent: #00e5ff;
+            /* titles / highlights */
+            --accent-strong: #00c0ff;
+            /* active bar */
+            --bullet: #e0f7ff;
+            /* bullets */
+        }
+
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+
+
+
+        header {
+            background: linear-gradient(180deg, var(--header-top), var(--header-bottom));
+            padding: 16px 24px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: var(--card);
+            border: 1px solid var(--cyan);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 168, 232, 0.4);
+        }
+
+        .q-box {
+            margin-bottom: 20px;
+            border-left: 4px solid #fff;
+            padding-left: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .q-box.correct {
+            border-left-color: #00ff00;
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        .q-box.incorrect {
+            border-left-color: #ff0000;
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+
+        .btn {
+            background: #fff;
+            color: #000;
+            padding: 15px 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #score {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #00ff00;
+        }
+
+        .btn-nav {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            border: 1px solid var(--cyan);
+            color: var(--primary-cyan);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        .tab-bar {
+            display: flex;
+            background: #050814;
+            border-bottom: 2px solid var(--accent-strong);
+        }
+
+        .tab {
+            padding: 10px 18px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        a {
+            color: white;
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            border: 1px solid var(--primary-cyan);
+            color: var(--primary-cyan);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            background: var(--primary-cyan);
+            color: white;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        img {
+
+
+            filter: drop-shadow(0 0 10px var(--primary-cyan));
+            margin-bottom: 10px;
+            background-color: white;
+            width: 10%;
+            height: 10%;
+        }
+
+        .answer-label {
+            display: block;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .answer-label.user-correct {
+            background-color: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+        }
+
+        .answer-label.user-incorrect {
+            background-color: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+        }
+
+        .answer-label.show-correct {
+            background-color: rgba(0, 255, 0, 0.15);
+            border: 2px solid #00ff00;
+        }
+
+        .correct-answer-text {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(0, 255, 0, 0.1);
+            border-left: 3px solid #00ff00;
+            color: #00ff00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="https://img.collegepravesh.com/2021/12/PTU-Puducherry-Logo.png" alt="Lab Logo">
+        <h2>DEPARTMENT OF ELECTRONICS AND COMMUNICATION ENGINEERING</h2>
+        <h2 class="lab-title">Virtual Laboratory:<br>Linear Feedback Shift Register [LFSR]</h2>
+    </header>
+
+    <div class="tab-bar">
+        <div class="tab">
+            <a href="aim.html"> AIM</a>
+        </div>
+        <div class="tab"><a href="theory.html">THEORY</a></div>
+        <div class="tab"> <a href="block.html">PROCEDURE</a></div>
+        <div class="tab"> <a href="pre.html">PRE-TEST</a></div>
+        <div class="tab"><a href="experiment.html">EXPERIMENT-SIMULATION</a></div>
+        <div class="tab"><a href="post.html">POST-TEST</a></div>
+        <div class="tab"> <a href="observation.html">OBSERVATION AND RESULTS</a></div>
+        <div class="tab"><a href="credit.html">CONTRIBUTIONS</a></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>POST-TEST: VIVA VOCE</h1>
+        </div>
+        <form id="quizForm"></form>
+        <button class="btn" id="submitBtn" onclick="calculateScore()">FINALIZE VIVA</button>
+        <div id="score"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "What is a major advantage of LFSR?", a: "High speed and efficiency", o: ["High speed and efficiency", "Truly random output", "Low complexity", "Hardware independence"] },
+            { q: "Which application uses LFSR for error detection?", a: "Communication systems", o: ["Power generation", "Communication systems", "Analog filtering", "Mechanical cooling"] },
+            { q: "The maximum length of an n-bit LFSR is ___.", a: "2^n - 1", o: ["n^2", "2^n", "2^n - 1", "2n"] },
+            { q: "What is BIST?", a: "Built-In Self-Test", o: ["Binary Internal Signal Test", "Built-In Self-Test", "Basic Input System Tool", "Bit Integrated System Test"] },
+            { q: "A disadvantage of LFSR is that the sequence is ___.", a: "Predictable", o: ["Predictable", "Slow", "Unstable", "Non-linear"] },
+            { q: "LFSRs are NOT suitable for ___.", a: "High-security applications", o: ["Communication", "High-security applications", "Data scrambling", "Random number generation"] },
+            { q: "What prevents long strings of 0s or 1s in data?", a: "Scrambling", o: ["Amplification", "Scrambling", "Quantization", "Filtering"] },
+            { q: "Spread-spectrum systems use LFSR for ___.", a: "Signal spreading", o: ["Signal spreading", "Voltage boost", "Clock slowing", "Data deletion"] },
+            { q: "If the seed is all zeros in an XOR LFSR, what happens?", a: "It gets stuck at zero", o: ["It generates ones", "It gets stuck at zero", "It works normally", "The hardware burns"] },
+            { q: "Which tool handled '3D effects' in this lab?", a: "CSS3", o: ["HTML5", "JavaScript", "CSS3", "SQL"] },
+            { q: "A sequence with period 2^n - 1 is called a ___ sequence.", a: "Maximum length", o: ["Minimum length", "Maximum length", "Infinite", "Null"] },
+            { q: "Digital signature generation uses LFSR for ___.", a: "Encryption support", o: ["Encryption support", "Power storage", "Analog display", "Heat dissipation"] },
+            { q: "What determines the period of the LFSR?", a: "Tap positions", o: ["Clock voltage", "Tap positions", "Screen resolution", "Ambient temperature"] },
+            { q: "Galois and Fibonacci are two ___ of LFSR.", a: "Architectures", o: ["Languages", "Architectures", "Gate types", "Companies"] },
+            { q: "Is an LFSR hardware-efficient?", a: "Yes, very high efficiency", o: ["Yes, very high efficiency", "No, it is slow", "Only for analog systems", "Only for high power"] },
+            { q: "What happens to the sequence if you change the seed?", a: "Starts at a different point", o: ["Period changes", "Starts at a different point", "Logic gates break", "Nothing changes"] },
+            { q: "Can LFSR be used for cryptography?", a: "Yes, but it is predictable", o: ["No, never", "Yes, but it is predictable", "Only for bank safes", "Yes, it is perfectly secure"] },
+            { q: "The 'Linear' property allows the use of ___ polynomials.", a: "Primitive", o: ["Quadratic", "Primitive", "Integral", "Differential"] },
+            { q: "How many taps are required for a maximum length sequence?", a: "Depends on n", o: ["Always 1", "Always 2", "Depends on n", "All bits"] },
+            { q: "The virtual lab helps students visualize ___.", a: "LFSR operations", o: ["Solar panels", "LFSR operations", "Battery chemistry", "Fluid dynamics"] }
+        ];
+
+        const form = document.getElementById('quizForm');
+        questions.forEach((item, i) => {
+            let html = `<div class="q-box" id="qbox${i}"><p><strong>${i + 1}. ${item.q}</strong></p>`;
+            item.o.forEach(opt => {
+                html += `<label class="answer-label" id="label${i}_${opt}">
+                        <input type="radio" name="pq${i}" value="${opt}"> ${opt}
+                     </label>`;
+            });
+            html += `<span class="correct-answer-text" id="correct${i}" style="display:none;"></span>`;
+            form.innerHTML += html + `</div>`;
+        });
+
+        function calculateScore() {
+            let score = 0;
+            let submitted = false;
+
+            questions.forEach((item, i) => {
+                const sel = document.querySelector(`input[name="pq${i}"]:checked`);
+                const qBox = document.getElementById(`qbox${i}`);
+                const correctAnswerSpan = document.getElementById(`correct${i}`);
+
+                // Reset all labels for this question
+                item.o.forEach(opt => {
+                    const label = document.getElementById(`label${i}_${opt}`);
+                    label.classList.remove('user-correct', 'user-incorrect', 'show-correct');
+                });
+
+                if (sel) {
+                    submitted = true;
+                    const userAnswer = sel.value;
+                    const userLabel = document.getElementById(`label${i}_${userAnswer}`);
+                    const correctLabel = document.getElementById(`label${i}_${item.a}`);
+
+                    if (userAnswer === item.a) {
+                        // User got it correct
+                        score++;
+                        qBox.classList.add('correct');
+                        qBox.classList.remove('incorrect');
+                        userLabel.classList.add('user-correct');
+                    } else {
+                        // User got it wrong
+                        qBox.classList.add('incorrect');
+                        qBox.classList.remove('correct');
+                        userLabel.classList.add('user-incorrect');
+                        correctLabel.classList.add('show-correct');
+                    }
+
+                    // Show correct answer
+                    correctAnswerSpan.textContent = `✓ Correct Answer: ${item.a}`;
+                    correctAnswerSpan.style.display = 'block';
+                } else {
+                    // No answer selected - show correct answer
+                    const correctLabel = document.getElementById(`label${i}_${item.a}`);
+                    correctLabel.classList.add('show-correct');
+                    correctAnswerSpan.textContent = `✓ Correct Answer: ${item.a}`;
+                    correctAnswerSpan.style.display = 'block';
+                    qBox.classList.add('incorrect');
+                }
+
+                // Disable all radio buttons for this question
+                document.querySelectorAll(`input[name="pq${i}"]`).forEach(input => {
+                    input.disabled = true;
+                });
+            });
+
+            const scoreDiv = document.getElementById('score');
+            scoreDiv.innerHTML = `<strong>Final Marks: ${score} / 20</strong>`;
+
+            // Disable submit button
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = 'VIVA COMPLETED';
+        }
+    </script>
+
+
+
+</body>
+
+</html>
